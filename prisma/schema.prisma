@@ -20,5 +20,8 @@ model User {
   name           String
   email          String?
   accessToken    String
+  pageId         String
+  pageAccessToken String
+  igUserId       String
   createdAt      DateTime @default(now())
 }

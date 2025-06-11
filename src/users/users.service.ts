@@ -5,7 +5,15 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService {
-  async findOrCreate(profile, accessToken: string) {
+  async findOrCreate(
+    profile,
+    accessToken: string,
+    extraData?: {
+      pageId: string;
+      pageAccessToken: string;
+      igUserId: string;
+    },
+  ) {
     const existing = await prisma.user.findUnique({
       where: { facebookId: profile.id },
     });
@@ -18,6 +26,9 @@ export class UsersService {
         name: profile.displayName,
         email: profile.emails?.[0]?.value,
         accessToken,
+        pageId: extraData.pageId,
+        pageAccessToken: extraData.pageAccessToken,
+        igUserId: extraData.igUserId,
       },
     });
   }
