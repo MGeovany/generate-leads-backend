@@ -24,4 +24,21 @@ model User {
   pageAccessToken String
   igUserId       String
   createdAt      DateTime @default(now())
+
+  interactions   Interaction[]
 }
+
+model Interaction {
+  id          String   @id @default(uuid())
+  userId      String
+  source      String   // 'simulation' | 'webhook' | 'manual'
+  type        String   // 'dm' | 'comment' | 'mention'
+  text        String
+  classification String?
+  aiResponse  String?
+  isAiGenerated Boolean @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
