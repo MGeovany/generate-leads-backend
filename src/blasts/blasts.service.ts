@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '../../generated/prisma';
+import { QueueService } from 'src/queue/queue.service';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class BlastsService {
+  constructor(private readonly queueService: QueueService) {}
+
   async createBlast(userId: string, message: string) {
     const scheduledAt = new Date(); // for now, immediate
     const interactions = await prisma.interaction.findMany({
@@ -29,7 +32,16 @@ export class BlastsService {
           })),
         },
       },
+      include: { targets: true },
     });
+
+    // Enqueue messages
+    for (const target of blast.targets) {
+      await this.queueService.enqueueBlast({
+        targetId: target.id,
+        message,
+      });
+    }
 
     return blast;
   }
