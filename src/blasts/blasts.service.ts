@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '../../generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { QueueService } from 'src/queue/queue.service';
 
 const prisma = new PrismaClient();
