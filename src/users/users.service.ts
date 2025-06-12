@@ -32,4 +32,18 @@ export class UsersService {
       },
     });
   }
+
+  async getMe(userId: string) {
+    return prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        pageId: true,
+        igUserId: true,
+        createdAt: true,
+      },
+    });
+  }
 }

@@ -10,7 +10,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       clientSecret: process.env.FB_CLIENT_SECRET,
       callbackURL: process.env.FB_CALLBACK_URL,
       profileFields: ['id', 'displayName', 'emails'],
-      scope: [
+      /* scope: [
         'email',
         'pages_show_list',
         'pages_manage_metadata',
@@ -18,7 +18,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
         'instagram_basic',
         'instagram_manage_comments',
         'instagram_manage_messages',
-      ],
+      ], */
     });
   }
 

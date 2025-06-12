@@ -26,6 +26,7 @@ model User {
   createdAt      DateTime @default(now())
 
   interactions   Interaction[]
+  triggers       Trigger[]
 }
 
 model Interaction {
@@ -40,5 +41,20 @@ model Interaction {
   createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])
+}
+
+
+model Trigger {
+  id            String   @id @default(uuid())
+  userId        String
+  type          String   // 'comment' | 'dm' | 'reaction'
+  keyword       String
+  responseType  String   // 'static' | 'ai'
+  responseText  String? 
+  responsePublic String? 
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id])
 }
 
