@@ -27,12 +27,18 @@ model User {
   accountType     String? 
   customAccountType String?
   audienceStyle   String? 
+  role     Role     @default(CREATOR)
   createdAt       DateTime @default(now())
 
   triggers        Trigger[]
   interactions    Interaction[]
   blasts          Blast[]
   requestLogs     RequestLog[]
+}
+
+enum Role {
+  ADMIN
+  CREATOR
 }
 
 model Interaction {

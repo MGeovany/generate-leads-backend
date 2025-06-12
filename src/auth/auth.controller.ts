@@ -25,6 +25,7 @@ export class AuthController {
     const token = this.jwtService.sign({
       sub: user.id,
       name: user.name,
+      role: user.role,
     });
 
     return {
