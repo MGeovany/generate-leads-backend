@@ -10,6 +10,7 @@ import { BlastsModule } from './blasts/blasts.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { LogsModule } from './logs/logs.module';
 import { RequestUserLoggerMiddleware } from './common/middleware/request-user-logger.middleware';
+import { ScheduledModule } from './scheduled/scheduled.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RequestUserLoggerMiddleware } from './common/middleware/request-user-lo
     BlastsModule,
     WebhooksModule,
     LogsModule,
+    ScheduledModule,
   ],
   controllers: [AppController],
   providers: [AppService],

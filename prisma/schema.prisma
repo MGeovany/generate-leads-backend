@@ -34,6 +34,7 @@ model User {
   interactions    Interaction[]
   blasts          Blast[]
   requestLogs     RequestLog[]
+  scheduledMessages ScheduledMessage[]
 }
 
 enum Role {
@@ -110,3 +111,17 @@ model RequestLog {
 
   user       User?    @relation(fields: [userId], references: [id])
 }
+
+model ScheduledMessage {
+  id          String   @id @default(uuid())
+  userId      String
+  type        String   // 'dm' | 'comment'
+  targetId    String   // igUserId o commentId, según el tipo
+  message     String
+  scheduledAt DateTime
+  status      String   @default("pending") // 'pending' | 'sent' | 'failed'
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
