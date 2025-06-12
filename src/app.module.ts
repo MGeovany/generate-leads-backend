@@ -8,7 +8,13 @@ import { InteractionsModule } from './interactions/interactions.module';
 import { TriggersModule } from './triggers/triggers.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, AiModule, InteractionsModule, TriggersModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    AiModule,
+    InteractionsModule,
+    TriggersModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -46,4 +46,12 @@ export class UsersService {
       },
     });
   }
+
+  async updateTone(userId: string, aiTone: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { aiTone },
+      select: { id: true, aiTone: true },
+    });
+  }
 }
