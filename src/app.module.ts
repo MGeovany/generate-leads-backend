@@ -7,6 +7,7 @@ import { AiModule } from './ai/ai.module';
 import { InteractionsModule } from './interactions/interactions.module';
 import { TriggersModule } from './triggers/triggers.module';
 import { BlastsModule } from './blasts/blasts.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BlastsModule } from './blasts/blasts.module';
     InteractionsModule,
     TriggersModule,
     BlastsModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

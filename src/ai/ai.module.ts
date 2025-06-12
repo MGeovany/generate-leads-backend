@@ -9,5 +9,6 @@ import { UsersModule } from '../users/users.module';
   imports: [InteractionsModule, TriggersModule, UsersModule],
   providers: [AiService],
   controllers: [AiController],
+  exports: [AiService],
 })
 export class AiModule {}
