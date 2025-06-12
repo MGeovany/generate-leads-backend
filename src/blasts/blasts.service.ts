@@ -55,4 +55,27 @@ export class BlastsService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  async getBlastStatus(blastId: string, userId: string) {
+    return prisma.blast.findFirst({
+      where: { id: blastId, userId },
+      include: {
+        targets: {
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+            interaction: {
+              select: {
+                id: true,
+                text: true,
+                type: true,
+                createdAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
