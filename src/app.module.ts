@@ -12,6 +12,9 @@ import { LogsModule } from './logs/logs.module';
 import { RequestUserLoggerMiddleware } from './common/middleware/request-user-logger.middleware';
 import { ScheduledModule } from './scheduled/scheduled.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guards/roles.guard';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -25,9 +28,16 @@ import { NotificationsModule } from './notifications/notifications.module';
     LogsModule,
     ScheduledModule,
     NotificationsModule,
+    AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
