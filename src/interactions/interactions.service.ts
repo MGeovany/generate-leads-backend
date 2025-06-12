@@ -20,4 +20,21 @@ export class InteractionsService {
       },
     });
   }
+
+  async findAllByUser(userId: string) {
+    return prisma.interaction.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        text: true,
+        type: true,
+        source: true,
+        aiResponse: true,
+        isAiGenerated: true,
+        classification: true,
+        createdAt: true,
+      },
+    });
+  }
 }
