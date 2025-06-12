@@ -57,7 +57,7 @@ export class BlastsService {
   }
 
   async getBlastStatus(blastId: string, userId: string) {
-    return prisma.blast.findFirst({
+    const blast = await prisma.blast.findFirst({
       where: { id: blastId, userId },
       include: {
         targets: {
@@ -77,5 +77,24 @@ export class BlastsService {
         },
       },
     });
+
+    if (!blast) return null;
+
+    const summary = blast.targets.reduce(
+      (acc, t) => {
+        acc[t.status] += 1;
+        return acc;
+      },
+      { sent: 0, pending: 0, failed: 0 },
+    );
+
+    return {
+      id: blast.id,
+      message: blast.message,
+      scheduledAt: blast.scheduledAt,
+      createdAt: blast.createdAt,
+      summary,
+      targets: blast.targets,
+    };
   }
 }
