@@ -2,6 +2,7 @@ import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { UsersService } from './users.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('me')
@@ -13,13 +14,8 @@ export class UsersController {
     return this.usersService.getMe(user.userId);
   }
 
-  @Get()
-  getProfile(@CurrentUser() user: any) {
-    return this.usersService.getMe(user.userId);
-  }
-
   @Patch()
-  updateAiTone(@Body('aiTone') aiTone: string, @CurrentUser() user: any) {
-    return this.usersService.updateTone(user.userId, aiTone);
+  updateProfile(@CurrentUser() user: any, @Body() body: UpdateProfileDto) {
+    return this.usersService.updateProfile(user.userId, body);
   }
 }

@@ -3,10 +3,11 @@ import { AiService } from './ai.service';
 import { AiController } from './ai.controller';
 import { InteractionsModule } from '../interactions/interactions.module';
 import { TriggersModule } from '../triggers/triggers.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [InteractionsModule, TriggersModule],
+  imports: [InteractionsModule, TriggersModule, UsersModule],
   providers: [AiService],
-  controllers: [AiController]
+  controllers: [AiController],
 })
 export class AiModule {}

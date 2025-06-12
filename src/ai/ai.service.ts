@@ -14,18 +14,28 @@ export class AiService {
 
   async simulateResponse(
     text: string,
-    aiTone: string = 'friendly',
+    profile: {
+      aiTone?: string;
+      accountType?: string;
+      customAccountType?: string;
+      audienceStyle?: string;
+    },
   ): Promise<{ response: string; isAiGenerated: boolean }> {
     try {
+      const tone = profile.aiTone || 'friendly';
+      const account =
+        profile.customAccountType || profile.accountType || 'Instagram creator';
+      const style = profile.audienceStyle || 'friendly';
+
       const prompt = `
-Act as an Instagram content creator who responds to DMs in a ${aiTone} tone.
-The incoming message was: "${text}"
-Reply naturally, clearly, and in a way that feels human.
-Include a link if it seems like a request for content.
+Act as a ${account} who manages an Instagram account and replies to DMs using a ${tone} tone.
+You usually communicate with your followers in a ${style} way.
+The incoming message is: "${text}"
+Reply clearly, naturally, and in your brand's voice.
+If the message seems like a request for information or content, include a link.
 
 Your response:
 `;
-
       const completion = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini', // Using cheaper model to reduce quota usage
         messages: [{ role: 'user', content: prompt }],

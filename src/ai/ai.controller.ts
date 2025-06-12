@@ -4,6 +4,7 @@ import { InteractionsService } from 'src/interactions/interactions.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { TriggersService } from 'src/triggers/triggers.service';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('ai')
 export class AiController {
@@ -11,6 +12,7 @@ export class AiController {
     private readonly aiService: AiService,
     private readonly interactionsService: InteractionsService,
     private readonly triggersService: TriggersService,
+    private readonly usersService: UsersService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
@@ -33,9 +35,11 @@ export class AiController {
       if (trigger.responseType === 'static') {
         response = trigger.responseText || 'Respuesta estática no definida.';
       } else {
-        const ai = await this.aiService.simulateResponse(text);
-        response = ai.response;
-        isAiGenerated = ai.isAiGenerated;
+        const userProfile = await this.usersService.getMe(user.userId);
+        const result = await this.aiService.simulateResponse(text, userProfile);
+
+        response = result.response;
+        isAiGenerated = result.isAiGenerated;
       }
     }
 

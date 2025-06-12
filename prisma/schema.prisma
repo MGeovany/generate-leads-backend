@@ -23,7 +23,10 @@ model User {
   pageId          String
   pageAccessToken String
   igUserId        String
-  aiTone          String?  
+  aiTone          String?
+  accountType     String? 
+  customAccountType String?
+  audienceStyle   String? 
   createdAt       DateTime @default(now())
 
   triggers        Trigger[]

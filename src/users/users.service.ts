@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '../../generated/prisma';
+import { PrismaClient, User } from '../../generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -43,6 +43,10 @@ export class UsersService {
         pageId: true,
         igUserId: true,
         createdAt: true,
+        aiTone: true,
+        accountType: true,
+        customAccountType: true,
+        audienceStyle: true,
       },
     });
   }
@@ -52,6 +56,20 @@ export class UsersService {
       where: { id: userId },
       data: { aiTone },
       select: { id: true, aiTone: true },
+    });
+  }
+
+  async updateProfile(userId: string, data: Partial<User>) {
+    return prisma.user.update({
+      where: { id: userId },
+      data,
+      select: {
+        id: true,
+        aiTone: true,
+        accountType: true,
+        customAccountType: true,
+        audienceStyle: true,
+      },
     });
   }
 }
