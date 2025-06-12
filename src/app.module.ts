@@ -8,6 +8,7 @@ import { InteractionsModule } from './interactions/interactions.module';
 import { TriggersModule } from './triggers/triggers.module';
 import { BlastsModule } from './blasts/blasts.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { LogsModule } from './logs/logs.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
     TriggersModule,
     BlastsModule,
     WebhooksModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

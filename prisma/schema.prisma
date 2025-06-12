@@ -32,6 +32,7 @@ model User {
   triggers        Trigger[]
   interactions    Interaction[]
   blasts          Blast[]
+  requestLogs     RequestLog[]
 }
 
 model Interaction {
@@ -88,3 +89,18 @@ model BlastTarget {
 }
 
 
+model RequestLog {
+  id         String   @id @default(uuid())
+  userId     String?  // Opcional si el request no está autenticado
+  method     String
+  path       String
+  statusCode Int
+  ip         String?
+  userAgent  String?
+  body       Json?
+  error      String?
+  durationMs  Int      
+  createdAt  DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id])
+}
