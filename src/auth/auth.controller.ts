@@ -7,9 +7,7 @@ import { UsersService } from 'src/users/users.service';
 export class AuthController {
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  async facebookLogin() {
-    // Redirige a Facebook login
-  }
+  async facebookLogin() {}
 
   constructor(
     private jwtService: JwtService,
