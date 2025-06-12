@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '../../generated/prisma';
+import { Prisma, PrismaClient } from '../../generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -36,5 +36,61 @@ export class InteractionsService {
         createdAt: true,
       },
     });
+  }
+
+  async getUserStats(userId: string, from?: Date, to?: Date) {
+    const dateFilter: Prisma.InteractionWhereInput = {};
+
+    if (from || to) {
+      dateFilter.createdAt = {};
+      if (from) (dateFilter.createdAt as any).gte = from;
+      if (to) (dateFilter.createdAt as any).lte = to;
+    }
+
+    const baseWhere = {
+      userId,
+      ...(from || to ? dateFilter : {}),
+    };
+
+    const [total, ai, fallback, byType] = await Promise.all([
+      prisma.interaction.count({ where: baseWhere }),
+      prisma.interaction.count({
+        where: {
+          ...baseWhere,
+          isAiGenerated: true,
+          aiResponse: { not: null },
+        },
+      }),
+      prisma.interaction.count({
+        where: {
+          ...baseWhere,
+          isAiGenerated: false,
+          aiResponse: { not: null },
+        },
+      }),
+      prisma.interaction.groupBy({
+        by: ['type'],
+        where: baseWhere,
+        _count: true,
+      }),
+    ]);
+
+    const matched = ai + fallback;
+    const byTypeSummary = byType.reduce(
+      (acc, curr) => {
+        acc[curr.type] = curr._count;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    return {
+      totalInteractions: total,
+      matchedKeywords: matched,
+      noMatch: total - matched,
+      aiResponses: ai,
+      staticResponses: fallback,
+      byType: byTypeSummary,
+    };
   }
 }
