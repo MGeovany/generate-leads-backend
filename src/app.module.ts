@@ -11,6 +11,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
 import { LogsModule } from './logs/logs.module';
 import { RequestUserLoggerMiddleware } from './common/middleware/request-user-logger.middleware';
 import { ScheduledModule } from './scheduled/scheduled.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ScheduledModule } from './scheduled/scheduled.module';
     WebhooksModule,
     LogsModule,
     ScheduledModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { NotificationService } from 'src/notifications/notifications.service';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class ScheduledService {
+  constructor(private notificationService: NotificationService) {}
+
   async scheduleMessage(data: {
     userId: string;
     type: 'dm' | 'comment' | 'reaction';
@@ -61,6 +64,11 @@ export class ScheduledService {
       return null;
     }
 
+    await this.notificationService.notifyUser(
+      userId,
+      `Your scheduled message "${message.message}" was canceled.`,
+    );
+
     return prisma.scheduledMessage.update({
       where: { id },
       data: { status: 'canceled' },
@@ -79,6 +87,11 @@ export class ScheduledService {
     if (!msg || msg.userId !== userId || msg.status !== 'pending') {
       return null;
     }
+
+    await this.notificationService.notifyUser(
+      userId,
+      `Your scheduled message "${msg.message}" was updated.`,
+    );
 
     return prisma.scheduledMessage.update({
       where: { id },
