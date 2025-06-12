@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AiModule } from './ai/ai.module';
 import { InteractionsModule } from './interactions/interactions.module';
 import { TriggersModule } from './triggers/triggers.module';
+import { BlastsModule } from './blasts/blasts.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TriggersModule } from './triggers/triggers.module';
     AiModule,
     InteractionsModule,
     TriggersModule,
+    BlastsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

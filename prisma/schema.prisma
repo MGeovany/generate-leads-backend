@@ -31,13 +31,14 @@ model User {
 
   triggers        Trigger[]
   interactions    Interaction[]
+  blasts          Blast[]
 }
 
 model Interaction {
   id          String   @id @default(uuid())
   userId      String
   source      String   // 'simulation' | 'webhook' | 'manual'
-  type        String   // 'dm' | 'comment' | 'mention'
+  type        String   // 'dm' | 'comment' | 'reaction'
   text        String
   classification String?
   aiResponse  String?
@@ -45,6 +46,7 @@ model Interaction {
   createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])
+  blastTargets BlastTarget[]
 }
 
 
@@ -61,4 +63,28 @@ model Trigger {
 
   user          User     @relation(fields: [userId], references: [id])
 }
+
+
+model Blast {
+  id          String   @id @default(uuid())
+  userId      String
+  message     String
+  scheduledAt DateTime
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+  targets     BlastTarget[]
+}
+
+model BlastTarget {
+  id            String   @id @default(uuid())
+  blastId       String
+  interactionId String
+  status        String   // 'pending' | 'sent' | 'failed'
+  createdAt     DateTime @default(now())
+
+  blast         Blast     @relation(fields: [blastId], references: [id])
+  interaction   Interaction @relation(fields: [interactionId], references: [id])
+}
+
 
