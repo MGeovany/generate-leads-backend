@@ -1,4 +1,4 @@
-import { IsIn, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsIn, IsOptional, IsString } from 'class-validator';
 
 export class TestWebhookDto {
   @IsString()
@@ -12,5 +12,9 @@ export class TestWebhookDto {
 
   @IsOptional()
   @IsString()
-  source?: string; // 'simulation' | 'manual'
+  source?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  forceAi?: boolean;
 }

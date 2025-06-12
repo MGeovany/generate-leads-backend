@@ -10,7 +10,7 @@ export class WebhooksService {
   constructor(private readonly aiService: AiService) {}
 
   async processSimulatedInteraction(dto: TestWebhookDto) {
-    const { userId, type, text, source = 'simulation' } = dto;
+    const { userId, type, text, source = 'simulation', forceAi } = dto;
 
     const interaction = await prisma.interaction.create({
       data: {
@@ -21,7 +21,18 @@ export class WebhooksService {
       },
     });
 
-    const ai = await this.aiService.simulateResponse(text, {});
+    let ai;
+
+    if (forceAi === true) {
+      ai = await this.aiService.simulateResponse(text, {});
+    } else if (forceAi === false) {
+      ai = this.aiService.getFallbackResponse(text);
+    } else {
+      ai = await this.aiService.simulateResponse(text, {});
+      if (!ai.isAiGenerated) {
+        // fallback was used inside simulateResponse
+      }
+    }
 
     const updated = await prisma.interaction.update({
       where: { id: interaction.id },

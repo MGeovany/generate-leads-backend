@@ -68,7 +68,7 @@ Your response:
     }
   }
 
-  private getFallbackResponse(text: string): {
+  public getFallbackResponse(text: string): {
     response: string;
     isAiGenerated: boolean;
   } {
