@@ -4,6 +4,7 @@ import { TriggersController } from './triggers.controller';
 
 @Module({
   providers: [TriggersService],
-  controllers: [TriggersController]
+  controllers: [TriggersController],
+  exports: [TriggersService]
 })
 export class TriggersModule {}

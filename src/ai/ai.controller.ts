@@ -3,34 +3,58 @@ import { AiService } from './ai.service';
 import { InteractionsService } from 'src/interactions/interactions.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import { TriggersService } from 'src/triggers/triggers.service';
 
 @Controller('ai')
 export class AiController {
   constructor(
     private readonly aiService: AiService,
     private readonly interactionsService: InteractionsService,
+    private readonly triggersService: TriggersService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('simulate-interaction')
-  async simulate(@Body('text') text: string, @CurrentUser() user: any) {
-    const result = await this.aiService.simulateResponse(text);
+  async simulate(
+    @Body('text') text: string,
+    @Body('type') type: 'dm' | 'comment' | 'reaction',
+    @CurrentUser() user: any,
+  ) {
+    const trigger = await this.triggersService.matchTrigger(
+      user.userId,
+      type,
+      text,
+    );
+
+    let response = 'No se encontró una regla activa.';
+    let isAiGenerated = false;
+
+    if (trigger) {
+      if (trigger.responseType === 'static') {
+        response = trigger.responseText || 'Respuesta estática no definida.';
+      } else {
+        const ai = await this.aiService.simulateResponse(text);
+        response = ai.response;
+        isAiGenerated = ai.isAiGenerated;
+      }
+    }
 
     const saved = await this.interactionsService.saveInteraction({
       userId: user.userId,
       source: 'simulation',
-      type: 'dm',
+      type,
       text,
-      classification: undefined,
-      aiResponse: result.response,
-      isAiGenerated: result.isAiGenerated,
+      aiResponse: response,
+      isAiGenerated,
+      classification: trigger ? `match:${trigger.keyword}` : 'no_match',
     });
 
     return {
       interactionId: saved.id,
       input: text,
-      autoResponse: result.response,
-      isAiGenerated: result.isAiGenerated,
+      matchedTrigger: trigger?.keyword || null,
+      autoResponse: response,
+      isAiGenerated,
     };
   }
 }

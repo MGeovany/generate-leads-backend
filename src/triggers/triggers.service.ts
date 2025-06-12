@@ -36,4 +36,22 @@ export class TriggersService {
       where: { id, userId },
     });
   }
+
+  async matchTrigger(
+    userId: string,
+    type: 'dm' | 'comment' | 'reaction',
+    text: string,
+  ) {
+    const triggers = await prisma.trigger.findMany({
+      where: {
+        userId,
+        type,
+        active: true,
+      },
+    });
+
+    return triggers.find((trigger) =>
+      text.toLowerCase().includes(trigger.keyword.toLowerCase()),
+    );
+  }
 }

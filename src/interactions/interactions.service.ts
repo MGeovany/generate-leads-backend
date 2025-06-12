@@ -8,7 +8,7 @@ export class InteractionsService {
   async saveInteraction(params: {
     userId: string;
     source: 'simulation' | 'webhook';
-    type: 'dm' | 'comment' | 'mention';
+    type: 'dm' | 'comment' | 'reaction';
     text: string;
     classification?: string;
     aiResponse?: string;
