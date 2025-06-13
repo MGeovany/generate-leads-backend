@@ -8,6 +8,7 @@ import { randomUUID } from 'crypto';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { env } from './config/env';
+import { PrismaClient } from '@prisma/client';
 
 // Fix for @nestjs/schedule crypto.randomUUID issue
 if (!global.crypto) {
@@ -18,6 +19,16 @@ if (!global.crypto) {
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  const prisma = new PrismaClient();
+  try {
+    await prisma.$connect();
+    console.log('✅ Connected to database (Prisma)');
+  } catch (err) {
+    console.error('❌ Could not connect to the database');
+    console.error(err);
+    process.exit(1);
+  }
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'));
 

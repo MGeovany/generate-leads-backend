@@ -17,6 +17,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { AdminModule } from './admin/admin.module';
 import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
 import { env } from './config/env';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { env } from './config/env';
     NotificationsModule,
     AdminModule,
     KnowledgeBaseModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [
