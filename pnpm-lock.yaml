@@ -61,7 +61,7 @@ importers:
         version: 2.0.1
       openai:
         specifier: ^5.3.0
-        version: 5.3.0
+        version: 5.3.0(zod@3.25.63)
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -80,6 +80,9 @@ importers:
       swagger-ui-express:
         specifier: ^5.0.1
         version: 5.0.1(express@4.21.2)
+      zod:
+        specifier: ^3.25.63
+        version: 3.25.63
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.0.0
@@ -3396,6 +3399,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@3.25.63:
+    resolution: {integrity: sha512-3ttCkqhtpncYXfP0f6dsyabbYV/nEUW+Xlu89jiXbTBifUfjaSqXOG6JnQPLtqt87n7KAmnMqcjay6c0Wq0Vbw==}
+
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -6287,7 +6293,9 @@ snapshots:
     dependencies:
       mimic-fn: 2.1.0
 
-  openai@5.3.0: {}
+  openai@5.3.0(zod@3.25.63):
+    optionalDependencies:
+      zod: 3.25.63
 
   optionator@0.9.4:
     dependencies:
@@ -7054,3 +7062,5 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@0.1.0: {}
+
+  zod@3.25.63: {}

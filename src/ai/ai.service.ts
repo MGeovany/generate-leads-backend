@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OpenAI } from 'openai';
+import { env } from 'src/config/env';
 import { AI_TAGS, AiTag } from 'src/constants/ai-tags';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class AiService {
 
   constructor() {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: env.OPENAI_API_KEY,
     });
   }
 

@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 import { sign } from 'jsonwebtoken';
+import { env } from 'src/config/env';
 
 config();
 
@@ -9,7 +10,7 @@ const token = sign(
     name: 'Admin User',
     role: 'ADMIN',
   },
-  process.env.JWT_SECRET as string,
+  env.JWT_SECRET as string,
   { expiresIn: '7d' },
 );
 

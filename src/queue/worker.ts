@@ -1,5 +1,6 @@
 import { Worker } from 'bullmq';
 import { PrismaClient } from '@prisma/client';
+import { env } from 'src/config/env';
 
 const prisma = new PrismaClient();
 
@@ -22,8 +23,8 @@ const worker = new Worker(
   },
   {
     connection: {
-      host: process.env.REDIS_HOST || 'localhost',
-      port: Number(process.env.REDIS_PORT) || 6379,
+      host: env.REDIS_HOST || 'localhost',
+      port: Number(env.REDIS_PORT) || 6379,
     },
   },
 );

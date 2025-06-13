@@ -5,9 +5,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
 import { randomUUID } from 'crypto';
-import * as dotenv from 'dotenv';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { env } from './config/env';
 
 // Fix for @nestjs/schedule crypto.randomUUID issue
 if (!global.crypto) {
@@ -15,8 +15,6 @@ if (!global.crypto) {
     randomUUID: randomUUID,
   } as any;
 }
-
-dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -45,6 +43,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(env.PORT ? Number(env.PORT) : 3000);
 }
 bootstrap();

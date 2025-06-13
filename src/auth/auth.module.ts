@@ -7,12 +7,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersService } from 'src/users/users.service';
+import { env } from 'src/config/env';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'supersecret',
+      secret: env.JWT_SECRET || 'supersecret',
       signOptions: { expiresIn: '7d' },
     }),
     UsersModule,

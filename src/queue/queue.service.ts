@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { config } from 'dotenv';
+import { env } from 'src/config/env';
 
 config();
 
@@ -11,8 +12,8 @@ export class QueueService implements OnModuleInit {
   onModuleInit() {
     this.blastQueue = new Queue('blast', {
       connection: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: Number(process.env.REDIS_PORT) || 6379,
+        host: env.REDIS_HOST || 'localhost',
+        port: Number(env.REDIS_PORT) || 6379,
       },
     });
   }

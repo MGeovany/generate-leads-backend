@@ -16,6 +16,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
 import { AdminModule } from './admin/admin.module';
 import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
+import { env } from './config/env';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (env.NODE_ENV !== 'production') {
       consumer
         .apply(RequestUserLoggerMiddleware)
         .forRoutes({ path: '*', method: RequestMethod.ALL });
