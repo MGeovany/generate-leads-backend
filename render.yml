@@ -3,7 +3,7 @@ services:
     name: generate-leads-backend
     env: node
     plan: free
-    buildCommand: pnpm install && pnpm prisma generate && pnpm run build
+    buildCommand: pnpm install && pnpm prisma generate && pnpm prisma migrate deploy && pnpm run build
     startCommand: pnpm start
     autoDeploy: true
     envVars:
