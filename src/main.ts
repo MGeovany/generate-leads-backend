@@ -1,10 +1,11 @@
-import 'tsconfig-paths/register';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
-import { LoggingMiddleware } from './common/middleware/logging.middleware';
 import { ValidationPipe } from '@nestjs/common';
+import { join } from 'path';
+import { LoggingMiddleware } from './common/middleware/logging.middleware';
 import { randomUUID } from 'crypto';
+import * as dotenv from 'dotenv';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 // Fix for @nestjs/schedule crypto.randomUUID issue
 if (!global.crypto) {
@@ -16,9 +17,10 @@ if (!global.crypto) {
 dotenv.config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // Global validation pipe with transformation enabled
+  app.useStaticAssets(join(__dirname, '..', 'uploads'));
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -30,6 +32,7 @@ async function bootstrap() {
   );
 
   app.use(new LoggingMiddleware().use);
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

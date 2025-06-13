@@ -35,6 +35,7 @@ model User {
   blasts          Blast[]
   requestLogs     RequestLog[]
   scheduledMessages ScheduledMessage[]
+  knowledgeBases    KnowledgeBase[]
 }
 
 enum Role {
@@ -55,6 +56,7 @@ model Interaction {
 
   user        User     @relation(fields: [userId], references: [id])
   blastTargets BlastTarget[]
+
 }
 
 
@@ -125,3 +127,12 @@ model ScheduledMessage {
   user        User     @relation(fields: [userId], references: [id])
 }
 
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+}
