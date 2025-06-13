@@ -23,9 +23,7 @@ services:
       - key: OPENAI_API_KEY
         sync: false
 
-      - key: REDIS_HOST
-        sync: false
-      - key: REDIS_PORT
+      - key: REDIS_URL
         sync: false
 
       - key: PORT
