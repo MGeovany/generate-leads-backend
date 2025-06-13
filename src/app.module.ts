@@ -15,7 +15,6 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guards/roles.guard';
 import { AdminModule } from './admin/admin.module';
-import { KnowledgeBaseController } from './knowledge-base/knowledge-base.controller';
 import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
 
 @Module({
@@ -33,7 +32,7 @@ import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
     AdminModule,
     KnowledgeBaseModule,
   ],
-  controllers: [AppController, KnowledgeBaseController],
+  controllers: [AppController],
   providers: [
     AppService,
     {
