@@ -26,9 +26,9 @@ export class UsersService {
         name: profile.displayName,
         email: profile.emails?.[0]?.value,
         accessToken,
-        pageId: extraData.pageId,
-        pageAccessToken: extraData.pageAccessToken,
-        igUserId: extraData.igUserId,
+        pageId: extraData?.pageId || '',
+        pageAccessToken: extraData?.pageAccessToken || '',
+        igUserId: extraData?.igUserId || '',
       },
     });
   }
