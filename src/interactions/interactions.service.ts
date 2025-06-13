@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, Prisma } from '@prisma/client';
+import { AiService } from 'src/ai/ai.service';
 
 const prisma = new PrismaClient();
 
 @Injectable()
 export class InteractionsService {
+  constructor(private readonly aiService: AiService) {}
+
   async saveInteraction(params: {
     userId: string;
     source: 'simulation' | 'webhook';
@@ -14,9 +17,16 @@ export class InteractionsService {
     aiResponse?: string;
     isAiGenerated?: boolean;
   }) {
+    let classification = params.classification;
+
+    if (!classification) {
+      classification = await this.aiService.classify(params.text);
+    }
+
     return prisma.interaction.create({
       data: {
         ...params,
+        classification,
       },
     });
   }

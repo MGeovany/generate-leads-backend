@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OpenAI } from 'openai';
+import { AI_TAGS, AiTag } from 'src/constants/ai-tags';
 
 @Injectable()
 export class AiService {
@@ -129,5 +130,35 @@ Your response:
         '¡Hola! Gracias por tu mensaje. En este momento estoy experimentando algunos problemas técnicos, pero te responderé personalmente muy pronto. ¡Gracias por tu paciencia! 😊',
       isAiGenerated: false,
     };
+  }
+
+  async classify(text: string): Promise<AiTag> {
+    const prompt = `
+You are a message classification assistant.
+Classify the following message into one of these categories:
+- greeting
+- pricing_request
+- info_request
+- complaint
+- thanks
+- spam
+- other
+
+Message: "${text}"
+Just respond with the category, nothing else.
+`;
+
+    const completion = await this.openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0,
+      max_tokens: 10,
+    });
+
+    const tag = completion.choices[0].message.content?.trim().toLowerCase();
+
+    if (AI_TAGS.includes(tag as AiTag)) return tag as AiTag;
+
+    return 'other';
   }
 }
