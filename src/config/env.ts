@@ -20,10 +20,7 @@ const envSchema = z.object({
 
   NODE_ENV: z.string(),
 
-  REDIS_HOST: z.string(),
-  REDIS_PORT: z.string().refine((val) => !isNaN(Number(val)), {
-    message: 'REDIS_PORT must be a number',
-  }),
+  REDIS_URL: z.string().url(),
 });
 
 export const env = envSchema.parse(process.env);

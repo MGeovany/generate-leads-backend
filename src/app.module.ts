@@ -18,6 +18,7 @@ import { AdminModule } from './admin/admin.module';
 import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
 import { env } from './config/env';
 import { PrismaModule } from './prisma/prisma.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PrismaModule } from './prisma/prisma.module';
     AdminModule,
     KnowledgeBaseModule,
     PrismaModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [
